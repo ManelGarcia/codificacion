@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Página Interactiva</title>
+    <style>
+        body {
+            background-image: url('./img/back.jpg');
+            /* Cambia 'fondo.jpg' por la URL de tu imagen de fondo */
+            background-size: cover;
+            background-position: center;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        
+        #contenedor {
+            background-color: rgba(255, 255, 255, 0.8);
+            border-radius: 10px;
+            padding: 20px;
+            width: 400px;
+            text-align: center;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
+        }
+        
+        #respuesta {
+            display: none;
+        }
+        
+        #imagen {
+            width: 150px;
+            /* Ancho de todas las imágenes */
+            height: 150px;
+            /* Alto de todas las imágenes */
+            margin-right: 20px;
+        }
+        
+        #imagen2 {
+            width: 150px;
+            /* Ancho de todas las imágenes */
+            height: 150px;
+            /* Alto de todas las imágenes */
+            margin-right: 20px;
+        }
+        
+        #loader {
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="contenedor">
+        <img src="./img/mago1.jpg" alt="Imagen 1" id="imagen">
+        <!-- Cambia 'imagen1.jpg' por la URL de tu primera imagen -->
+        <div>
+            <p>Que quieres que te desencripte?</p>
+            <input type="text" id="fraseEncriptada">
+            <button onclick="cargarRespuesta()">Desencriptar</button>
+
+        </div>
+        <div id="loader">
+            <img src="./img/mago2.jpg" alt="Cargando..." id="imagen2">
+            <!-- Cambia 'loader.gif' por la URL de tu imagen de carga -->
+        </div>
+        <div id="respuesta">
+            <img src="./img/mago3.jpg" alt="Imagen 2" id="imagen">
+
+            <!-- Cambia 'imagen2.jpg' por la URL de tu segunda imagen -->
+            <p id="textoRespuesta"></p>
+            <button onclick="restaurarEstado()">Volver</button>
+        </div>
+    </div>
+
+    <script>
+        function desencriptar(cadena1) {
+            // Declaramos una variable de caracteresImpares
+            var caracteresImpares = '';
+            var caracteresPares = '';
+
+            // Carácteres Impares
+            for (var i = 0; i < cadena1.length; i += 2) {
+                // Concatenamos la secuencia de carácteres con +=
+                // cadena.charAt(i) va recogiendo los carácteres que tocan
+                caracteresImpares += cadena1.charAt(i);
+            }
+
+            // Carácteres Pares (hay que girarlos)
+            for (var i = 1; i < cadena1.length; i += 2) {
+                // Concatenamos la secuencia de carácteres con +=
+                // cadena.charAt(i) va recogiendo los carácteres que tocan
+                caracteresPares += cadena1.charAt(i);
+                console.log(caracteresPares);
+            }
+
+            // Revertimos los carácteres pares para que esté todo en orden
+
+            var caracteresRevertidos = caracteresPares.split('').reverse().join('');
+
+            // Con esta suma de variables, hemos pasado de x'' a x'
+            var primeraEncriptacion = caracteresImpares + caracteresRevertidos;
+
+            // Ahora desencriptaremos de x' a x
+
+            var fraseCod = primeraEncriptacion;
+
+            letrasCod = fraseCod.split('');
+
+            var caracteres = letrasCod;
+            var cadena = "";
+            var fraseDes = "";
+
+            caracteres.forEach(function(caracter, index) {
+                if ('aeiouAEIOU'.includes(caracter)) {
+                    cadenaBuena = cadena.split('').reverse().join('');
+                    cadenaBuena += caracter;
+                    fraseDes += cadenaBuena;
+                    cadena = "";
+                } else {
+                    cadena += caracter;
+                    if (index === caracteres.length - 1) {
+                        fraseDes += cadena.split('').reverse().join('');
+                    }
+                }
+            });
+
+            console.log(fraseDes);
+
+            return fraseDes;
+        }
+
+        function desencriptarFrase() {
+            var fraseEncriptada = document.getElementById("fraseEncriptada").value;
+            var resultado = desencriptar(fraseEncriptada);
+            return resultado;
+        }
+
+        function cargarRespuesta() {
+            // Mostrar la pantalla de carga y ocultar el contenido anterior
+            document.getElementById('loader').style.display = 'block';
+            document.querySelector('div > div').style.display = 'none';
+            document.getElementById('imagen').style.display = 'none';
+
+
+            // Simular un retraso de 2 segundos (esto puede ser tu lógica de procesamiento)
+            setTimeout(function() {
+                var textoUsuario = desencriptarFrase();
+                var respuesta = "La respuesta es: " + textoUsuario; // Ejemplo de respuesta
+
+                // Ocultar la pantalla de carga y mostrar la respuesta
+                document.getElementById('loader').style.display = 'none';
+                document.getElementById('respuesta').style.display = 'block';
+                document.getElementById('textoRespuesta').textContent = respuesta;
+
+                // Cambiar la imagen al mostrar la respuesta
+                document.getElementById('imagen').style.display = 'none';
+                document.getElementById('imagenRespuesta').style.display = 'block';
+            }, 2000); // Cambia el tiempo de espera según tus necesidades
+        }
+
+        function restaurarEstado() {
+            location.reload();
+        }
+    </script>
+</body>
+
+</html>
